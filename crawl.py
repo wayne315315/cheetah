@@ -6,10 +6,13 @@ import pandas as pd
 from config import TAIWAN_URL
 
 
-def crawl(datestring):
+def crawl_tw_stock(datestring):
 	url = TAIWAN_URL % datestring
 
 	rawdata = requests.post(url).text
+	if not rawdata:
+		return None
+
 	header, footer = [], []
 	for i, line in enumerate(rawdata.split("\n")):
 	    if "Security Code" in line:
