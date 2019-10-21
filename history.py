@@ -1,5 +1,5 @@
 import random
-import time
+import asyncio
 from datetime import date, timedelta
 import sqlite3
 
@@ -13,8 +13,13 @@ today = date.today()
 
 def update():
 	with sqlite3.connect(DB) as conn:
-		update_tw_stock(conn)
+		loop = asyncio.get_event_loop()
+		todo = [update_tw_stock(conn)]
+		wait_coro = asyncio.wait(todo)
+		loop.run_until_complete(wait_coro)
+		loop.close()
 
+@asyncio.coroutine
 def update_tw_stock(conn):
 	"""Crawling stocks starting from yesterday to 'TW_STOCK_INTERVAL' days ago"""
 	c = conn.cursor()
@@ -53,7 +58,7 @@ def update_tw_stock(conn):
 			except OSError:
 				print("Connection Error...")
 				print("penalty time: %.2f hour" % (penalty / 3600))
-				time.sleep(penalty)
+				yield from asyncio.sleep(penalty)
 				penalty *= PENALTY_FACTOR
 			else:
 				penalty = PENALTY_TIME
@@ -67,7 +72,7 @@ def update_tw_stock(conn):
 				break
 			print("'tw_stock': update %s" % datestring)
 
-		time.sleep(random.random() * CRAWL_INTERVAL)
+		yield from asyncio.sleep(random.random() * CRAWL_INTERVAL)
 
 	print("Finished updating 'tw_stock'")
 
