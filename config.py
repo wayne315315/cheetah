@@ -1,8 +1,13 @@
-# Daily Stock Price and Volume in TWSE (fill datestring in %s)
+# Database
+DB = "securities.db"
+
+# URL for Daily Stock Price and Volume in TWSE
 TAIWAN_URL = "https://www.twse.com.tw/en/exchangeReport/MI_INDEX?response=csv&date=%s&type=ALL"
 
-# The interval (Unit: days) of the history record of stocks in Taiwan
-TW_STOCK_INTERVAL = 5 * 365
+# The interval of the history record of stocks in Taiwan (Unit: day)
+TW_STOCK_INTERVAL = 10
 
-# The database name for the stocks in Taiwan
-TW_STOCK_DB = "tw_stock.db"
+# Crawling-related configuration (Unit: second)
+CRAWL_INTERVAL = 10
+PENALTY_TIME = 3600
+PENALTY_FACTOR = 1.1

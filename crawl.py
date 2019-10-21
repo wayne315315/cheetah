@@ -7,6 +7,8 @@ from config import TAIWAN_URL
 
 
 def crawl_tw_stock(datestring):
+	"""datestring needs to be isoformat"""
+	datestring = datestring.replace("-", "")
 	url = TAIWAN_URL % datestring
 
 	rawdata = requests.post(url).text
