@@ -11,7 +11,7 @@ def crawl_tw_stock(datestring):
 	datestring = datestring.replace("-", "")
 	url = TAIWAN_URL % datestring
 
-	rawdata = requests.post(url, timeout=TIMEOUT).text
+	rawdata = requests.get(url, timeout=TIMEOUT).text
 	if not rawdata:
 		return None
 
