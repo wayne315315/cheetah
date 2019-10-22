@@ -3,7 +3,7 @@ from io import StringIO
 import requests
 import pandas as pd
 
-from config import TAIWAN_URL
+from config import TAIWAN_URL, TIMEOUT
 
 
 def crawl_tw_stock(datestring):
@@ -11,7 +11,7 @@ def crawl_tw_stock(datestring):
 	datestring = datestring.replace("-", "")
 	url = TAIWAN_URL % datestring
 
-	rawdata = requests.post(url).text
+	rawdata = requests.post(url, timeout=TIMEOUT).text
 	if not rawdata:
 		return None
 
